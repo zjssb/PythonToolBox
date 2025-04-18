@@ -1,0 +1,33 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.jira.jira-header-plugin:newsletter-signup-tip', location = 'static/components/newsletter/NewsletterSignup.soy' */
+// This file was automatically generated from NewsletterSignup.soy.
+// Please don't edit this file by hand.
+
+/**
+ * @fileoverview Templates in namespace JIRA.Templates.
+ */
+
+if (typeof JIRA == 'undefined') { var JIRA = {}; }
+if (typeof JIRA.Templates == 'undefined') { JIRA.Templates = {}; }
+
+
+JIRA.Templates.newsletterSignupTip = function(opt_data, opt_ignored) {
+  return '<div><p>' + soy.$$escapeHtml(opt_data.description) + '</p>' + aui.form.form({action: '#', isTopLabels: true, extraClasses: 'insiders-signup-form', content: '' + aui.form.textField({id: 'jira-newsletter-user-email', placeholderText: '' + soy.$$escapeHtml('Email\u5730\u5740'), value: opt_data.userEmail}) + aui.form.fieldGroup({content: '' + aui.form.select({id: 'jira-newsletter-role', options: opt_data.roles})}) + aui.form.textField({id: 'jira-newsletter-other-role-name', placeholderText: '' + soy.$$escapeHtml('\u4f8b\u5982\u201c\u5317\u5883\u4e4b\u738b\u201d(King of the North)'), extraClasses: 'hidden'}) + aui.form.fieldGroup({content: '' + aui.form.field({id: 'jira-newsletter-opt-in', type: 'checkbox', isChecked: false, extraClasses: 'jira-newsletter-opt-in', labelContent: '' + soy.$$filterNoAutoescape('\u5411\u6211\u4eec\u63d0\u4f9b\u60a8\u7684\u7535\u5b50\u90ae\u4ef6\u5730\u5740\u610f\u5473\u7740\u60a8\u63a5\u53d7\u6211\u4eec\u7684 \x3ca href\x3d\x22https://www.atlassian.com/legal/privacy-policy\x22 data-track-click\x3d\x22jira.newsletter.signuptip.privacy.link.click\x22\x3e\u9690\u79c1\u6761\u6b3e\x3c/a\x3e\uff0c\u5e76\u4e14\u540c\u610f\u6211\u4eec\u76f4\u63a5\u5c06 Atlassian \u5185\u5bb9\u53d1\u9001\u5230\u60a8\u7684\u6536\u4ef6\u7bb1\u3002')})}) + aui.form.buttons({content: '' + aui.form.submit({type: 'primary', text: '' + soy.$$filterNoAutoescape('\u6ce8\u518c')}) + aui.form.linkButton({text: '' + soy.$$escapeHtml('\u4e0d\uff0c\u8c22\u8c22')})})}) + '</div>';
+};
+if (goog.DEBUG) {
+  JIRA.Templates.newsletterSignupTip.soyTemplateName = 'JIRA.Templates.newsletterSignupTip';
+}
+
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.jira.jira-header-plugin:newsletter-signup-tip', location = 'static/components/newsletter/NewsletterRoles.js' */
+define("jira/newsletter/roles",["jira/util/formatter","underscore","exports"],function(e,t,n){"use strict";n.getRoles=function(){var n=[{value:"",text:"\u9009\u62e9\u60a8\u7684\u804c\u8d23",disabled:!0,selected:!0}],s=[{value:"software-engineer",text:"\u8f6f\u4ef6\u5de5\u7a0b"},{value:"product-manager",text:"\u4ea7\u54c1\u7ba1\u7406"},{value:"qa",text:"\u8d28\u91cf\u4fdd\u8bc1"},{value:"design",text:"\u8bbe\u8ba1"},{value:"management",text:"\u7ba1\u7406"},{value:"sys-admin",text:"\u7cfb\u7edf\u7ba1\u7406"}],r=[{value:"other",text:"\u5176\u5b83"}];return n.concat(t.shuffle(s)).concat(r)}});
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.jira.jira-header-plugin:newsletter-signup-tip', location = 'static/components/newsletter/NewsletterSignup.js' */
+define("jira/newsletter/signuptip",["jira/analytics","jira/util/formatter","jira/util/data/meta","jira/newsletter/roles","jira-help-tips/feature/help-tip","atlassian/libs/underscore-1.8.3","jquery"],function(e,i,n,t,r,a,s){"use strict";function l(e){return!(e.length>255)&&d.test(e)}function o(e){return a.reduce(e,function(e,i){return(e=(e<<5)-e+i.charCodeAt(0))&e},0)}function u(e){return a.omit(e,a.isUndefined)}var d=/^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;return{render:function(e){var i=a.random(1e4);setTimeout(function(){this.doRender(a.extend(e,{signupTipDelay:i}))}.bind(this),i)},doRender:function(a){var d={anchor:"#user-options",isSequence:!1,showCloseButton:!1};d.id=a.signupId,d.title=a.signupTitle,d.bodyHtml=JIRA.Templates.newsletterSignupTip({userEmail:a.userEmail,description:a.signupDescription,roles:t.getRoles()});var p=new r(d);if(!p.isDismissed()){var f=function(){return s("#aui-flag-container").find(".aui-flag").filter("[open]:visible").length};if(f())return void e.send({name:"jira.newsletter.signuptip.notshown",data:{flagsVisible:f(),signupTipDelay:a.signupTipDelay}});p.show(),e.send({name:"jira.newsletter.signuptip.shown"});var g=s("body");g.on("submit","form.aui.insiders-signup-form",function(t){t.preventDefault();var r=s(this);r.find(".error").remove();var d=r.find("#jira-newsletter-user-email"),g=r.find("#jira-newsletter-role"),m=r.find("#jira-newsletter-opt-in"),c=d.val(),w=g.val(),h=m.prop("checked"),j="other"===w?r.find("#jira-newsletter-other-role-name").val().substring(0,100):void 0,v=l(c),T=!0===h;v&&T?(s.ajax({type:"POST",url:i.format(a.formUrl,encodeURI(c)),dataType:"json",contentType:"application/json",data:JSON.stringify({role:w,otherRoleName:j,lang:n.getLanguage()})}).success(function(){e.send({name:"jira.newsletter.signuptip.submitted",data:u({role:w,otherRoleName:j,lang:n.getLanguage(),checksum:o(c.split("@")[0]),flagsVisible:f(),signupTipDelay:a.signupTipDelay})})}).error(function(i){e.send({name:"jira.newsletter.signuptip.error",data:{statusCode:i.status}})}),a.userEmail!==c&&e.send({name:"jira.newsletter.signuptip.email.changed"}),p.dismiss("newslettersubscribed")):(v||(e.send({name:"jira.newsletter.signuptip.email.validationerror",data:{flagsVisible:f()}}),d.after(aui.form.fieldError({message:"\u8bf7\u8f93\u5165\u4e00\u4e2a\u6709\u6548\u7684\u7535\u90ae\u5730\u5740\u3002"}))),T||(e.send({name:"jira.newsletter.signuptip.opt-in.validationerror",data:{flagsVisible:f()}}),m.parent().after(aui.form.fieldError({message:"\u8bf7\u540c\u610f\u7ee7\u7eed\u8fdb\u884c\u3002"}))))}),g.on("click","form.aui.insiders-signup-form a.cancel",function(i){i.preventDefault(),e.send({name:"jira.newsletter.signuptip.dismissed",data:{flagsVisible:f(),signupTipDelay:a.signupTipDelay}}),p.dismiss("newslettercancelled")}),g.on("change","form.aui.insiders-signup-form",function(){var e=s(this),i=e.find("#jira-newsletter-role");e.find("#jira-newsletter-other-role-name").parent().closest("div").toggleClass("hidden","other"!==i.val())})}}}});
+}catch(e){WRMCB(e)};
