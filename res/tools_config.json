@@ -1,0 +1,34 @@
+{
+    "calculator": {
+        "display_name": "计算器",
+        "open_mode": "overlay",
+        "description": "简单的计算器工具",
+        "icon": "",
+        "widget_module": "widgets.calculator",
+        "widget_class": "CalculatorTool"
+    },
+    "text_editor": {
+        "display_name": "文本编辑器",
+        "open_mode": "new_window",
+        "description": "简单的文本编辑工具",
+        "icon": "",
+        "widget_module": "widgets.text_editor",
+        "widget_class": "TextEditorTool"
+    },
+    "file_manager": {
+        "display_name": "文件管理器",
+        "open_mode": "overlay",
+        "description": "基本的文件浏览功能",
+        "icon": "",
+        "widget_module": "widgets.file_manager",
+        "widget_class": "FileManagerTool"
+    },
+    "settings": {
+        "display_name": "设置",
+        "open_mode": "new_window",
+        "description": "工具箱设置",
+        "icon": "",
+        "widget_module": "widgets.settings",
+        "widget_class": "SettingsTool"
+    }
+}

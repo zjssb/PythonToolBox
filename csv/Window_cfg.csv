@@ -1,0 +1,4 @@
+string,string,string
+Name,Width,Height
+窗口名称,窗口初始宽,窗口初始高
+MainView,400,400
