@@ -1,5 +1,6 @@
 {
   "name": "toolsBox",
   "width": 1000,
-  "height": 700
+  "height": 700,
+  "tool_width": 200
 }
