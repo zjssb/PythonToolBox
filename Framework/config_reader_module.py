@@ -26,10 +26,7 @@ class ConfigReader:
             print(f"加载配置时发生错误: {e}")
 
     def get_cfg(self, cfg_name)->dict:
-        """获取配置表
-
-        :return jsonData
-        """
+        """获取配置表"""
         if cfg_name not in self.config_data:
             self.load_cfg(cfg_name)
 

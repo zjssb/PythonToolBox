@@ -1,64 +1,73 @@
-from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QGroupBox, QPushButton, QLabel, QHBoxLayout, QTextEdit
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QGroupBox, QPushButton, QWidget, QHBoxLayout, QStackedWidget, QSplitter
 from PyQt5.QtCore import Qt
 from Framework.config_reader_module import ConfigReaderInst
+import importlib
 
-
-def tool_onclick(key):
-    # print(key)
-    if key == "file_rename":
-        print(123)
-
-
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow):        
     def __init__(self):
         super().__init__()
+        self.tool_index = {}
         self.init()
 
     def init(self):
         cfg = ConfigReaderInst.get_cfg("window_cfg")
         self.setWindowTitle(cfg.get("name"))
         self.setGeometry(100,100,cfg.get("width"),cfg.get("height"))
+        self.Splitter = QSplitter()
+        self.setCentralWidget(self.Splitter)
+        mainHLayout = QHBoxLayout()
+        self.Splitter.setLayout(mainHLayout)
 
-        self.boxGroup = QGroupBox()
-        self.setCentralWidget((self.boxGroup))
+        # 右侧
+        self.stack = QStackedWidget(self.Splitter)
 
-        mainHLayout = QHBoxLayout(self.boxGroup)
+        # 左侧
+        self.toolBox = QGroupBox(self.Splitter)
+        self.toolBox.setTitle("tool")
+        self.toolBox.setFixedWidth(cfg.get("tool_width"))
 
-        box = QGroupBox(self)
-        box.setFixedWidth(cfg.get("tool_width"))
-        box.setStyleSheet("background-color: #e0e0e0; border: 1px solid #a0a0a0;")
-
-        layout = QVBoxLayout(box)
+        # 左侧内容设置
+        layout = QVBoxLayout(self.toolBox)
         self.init_tools(layout)
         layout.addStretch()
-        box.setLayout(layout)
-        mainHLayout.addWidget(box)
+        self.toolBox.setLayout(layout)
 
-        # 右侧区域
-        self.toolView = QWidget(self)
-        self.toolView.setMinimumWidth(200)
-        QLabel("123",self.toolView)
-        mainHLayout.addWidget((self.toolView))
-        self.toolView.setStyleSheet("background-color: #f0f0f0; border: 1px solid #a0a0a0;")
+        self.Splitter.addWidget(self.toolBox)
+        self.Splitter.addWidget(self.stack)
 
-        # 右侧布局
-        # right_layout = QVBoxLayout(self.toolView)
-        # right_layout.addWidget(QLabel("可变宽度区域"))
-        # self.text_edit = QTextEdit()
-        # self.text_edit.setPlaceholderText("这个区域会随着窗口大小变化而调整宽度...")
-        # right_layout.addWidget(self.text_edit)
-        mainHLayout.addWidget(self.boxGroup)
-        mainHLayout.addWidget(self.toolView)
-
-        self.setLayout(mainHLayout)
-        mainHLayout.setStretchFactor(self.boxGroup, 0)  # 不拉伸
-        mainHLayout.setStretchFactor(self.toolView, 1)  # 拉伸
+        self.Splitter.setStretchFactor(0, 0)
+        self.Splitter.setStretchFactor(1, 1)
 
 
     def init_tools(self,layout:QVBoxLayout):
+        """初始化工具"""
         cfg = ConfigReaderInst.get_cfg("tools_cfg")
-        for k in cfg.keys():
-            btn = QPushButton(cfg.get(k).get("name"),self)
-            btn.clicked.connect(lambda: tool_onclick(k))
+        for key in cfg.keys():
+            btn = QPushButton(cfg.get(key).get("name"),self)
+            btn.setObjectName(key)
+            btn.clicked.connect(self.tool_onclick)
             layout.addWidget(btn,alignment=Qt.AlignTop)
+        
+    def tool_onclick(self):
+        """工具按钮点击"""
+        key = self.sender().objectName()
+        if key not in self.tool_index.keys():
+            cfg = ConfigReaderInst.get_cfg("tools_cfg")
+            widget = self.get_tool_widget(cfg[key])
+            widget.show()
+            self.tool_index[key] = self.stack.addWidget(widget)
+            
+        self.stack.setCurrentIndex(self.tool_index[key])
+
+
+    def get_tool_widget(self,cfg)->QWidget:
+        """获得工具面板对象"""
+        str_obj = cfg["class"]
+        module_name = cfg["module"]
+        try:
+            module_obj = importlib.import_module(f"Panel.{module_name}")
+        except:
+            print(f"面板模块加载错误:{module_name}-{str_obj}")
+            module_obj = importlib.import_module(f"Panel.BasePanel")
+        return getattr(module_obj, str_obj)()
 

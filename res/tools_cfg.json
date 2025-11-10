@@ -2,9 +2,22 @@
   "file_rename": {
     "name": "文件重命名",
     "module": "file_rename",
+    "class":"FileRename",
     "style": ""
   },
   "666": {
-    "name": "666"
+    "name": "666",
+    "module":"base_panel",
+    "class":"BasePanel"
+  },
+    "7": {
+    "name": "7",
+    "module":"base_panel",
+    "class":"BasePanel"
+  },
+    "6": {
+    "name": "6",
+    "module":"base_panel",
+    "class":"BasePanel"
   }
 }
